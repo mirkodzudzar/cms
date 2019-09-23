@@ -52,7 +52,7 @@
                             <thead>
                                 <tr>
                                     <th>Id</th>
-                                    <th>Category Title</th>                                   <th></th>
+                                    <th>Category Title</th>                   <th></th>
                                     <th></th>
                                 </tr>
                             </thead>

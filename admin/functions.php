@@ -1,5 +1,15 @@
 <?php
 
+    function confirm($result)
+    {
+        global $connection;
+        
+        if(!$result)
+        {
+            die("QUERY FAILED" . mysqli_error($connection));
+        }
+    }
+
     function insert_categories()
     {
         global $connection;
@@ -41,7 +51,8 @@
 
         echo "<tr>";
         echo "<td>{$cat_id}</td>";
-        echo "<td>{$cat_title}</td>";                     echo "<td><a href='categories.php?delete={$cat_id}'>DELETE</a></td>";
+        echo "<td>{$cat_title}</td>";                     
+        echo "<td><a href='categories.php?delete={$cat_id}'>DELETE</a></td>";
         echo "<td><a href='categories.php?edit={$cat_id}'>EDIT</a></td>";
         echo "<tr>";
 
@@ -61,4 +72,4 @@
         }
     }
 
-?>
+?>}
