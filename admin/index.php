@@ -1,13 +1,6 @@
 <?php include "includes/admin_header.php"; ?>
 
 <div id="wrapper">
-    
-    <?php 
-    
-        if($connection) echo "ITS WORKING"; 
-    
-    ?>
-
     <!-- Navigation -->
     <?php include "includes/admin_navigation.php"; ?>
 

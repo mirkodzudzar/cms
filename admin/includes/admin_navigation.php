@@ -60,7 +60,7 @@
                     </ul>
                 </li>
                 <li>
-                    <a href="bootstrap-elements.html"><i class="fa fa-fw fa-desktop"></i> Profile</a>
+                    <a href="profile.php"><i class="fa fa-fw fa-desktop"></i> Profile</a>
                 </li>
             </ul>
         </div>

@@ -8,6 +8,8 @@
     $query = "SELECT * FROM users WHERE user_id = {$the_user_id}";
     $select_users_by_id = mysqli_query($connection, $query);
 
+    confirm($select_users_by_id);
+
     while($row = mysqli_fetch_assoc($select_users_by_id))
     {
         $user_id = $row['user_id'];
