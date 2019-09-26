@@ -57,8 +57,8 @@
                 }
                 
                 echo "<td>{$comment_date}</td>";
-                echo "<td><a href='comments.php?approve={$comment_id}'>Approve</a></td>";
-                echo "<td><a href='comments.php?unapprove={$comment_id}'>Unapprove</a></td>";
+                echo "<td><a href='comments.php?approve={$comment_id}'>APPROVE</a></td>";
+                echo "<td><a href='comments.php?unapprove={$comment_id}'>UNAPPROVE</a></td>";
                 echo "<td><a href='comments.php?delete={$comment_id}'>DELETE</a></td>";
                 echo "</tr>";
 
