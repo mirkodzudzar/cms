@@ -3,6 +3,11 @@
 <?php
     if(isset($_POST['login_button']))
     {
+        
+//        $password = "secret";
+//        $hash_format = "$2y$10$";
+//        $salt = "iusesomecrazystrings22";
+        
         $username = $_POST['username'];
         $user_password = $_POST['user_password'];
         
@@ -28,6 +33,8 @@
             $db_user_email = $row['user_email'];
             $db_user_role = $row['user_role'];
         }
+        
+        $user_password = crypt($user_password, $db_user_password);
         
         if($username === $db_username && $user_password === $db_user_password)
         {
