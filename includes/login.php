@@ -1,7 +1,5 @@
-<?php include "db.php"; ?>
 <?php session_start(); ?>
-
-
+<?php include "db.php"; ?>
 <?php
     if(isset($_POST['login_button']))
     {

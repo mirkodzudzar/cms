@@ -33,6 +33,8 @@
                 {
                     die("QUERY FAILED" . mysqli_error($connection));
                 }
+                
+                echo "Category created";
             }
         }
     }

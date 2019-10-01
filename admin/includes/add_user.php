@@ -22,6 +22,10 @@
         
         //FUNCTION
         confirm($create_user_query);
+        
+        $the_user_id = mysqli_insert_id($connection);
+        
+        echo "<p class='bg-success'>User created. <a href='users.php'>See all users</a></p>";
     }
 ?>   
 

@@ -57,6 +57,8 @@
         $update_user = mysqli_query($connection, $query);
 
         confirm($update_user);
+        
+        echo "<p class='bg-success'>User updated. <a href='users.php'>Edit more users</a></p>";
     }
 
 ?>

@@ -15,13 +15,17 @@
         
         move_uploaded_file($post_image_temp, "../images/$post_image");
         
-        $query = "INSERT INTO posts(post_category_id, post_title, post_author, post_date, post_image, post_content, post_tags, post_status)";
+        $query = "INSERT INTO posts (post_category_id, post_title, post_author, post_date, post_image, post_content, post_tags, post_status) ";
         $query .= "VALUES({$post_category_id}, '{$post_title}', '{$post_author}', now(), '{$post_image}', '{$post_content}', '{$post_tags}', '{$post_status}')";
         
         $create_post_query = mysqli_query($connection, $query);
         
         //FUNCTION
         confirm($create_post_query);
+        //Last created id in database
+        $the_post_id = mysqli_insert_id($connection);
+        
+        echo "<p class='bg-success'>Post created. <a href='../post.php?p_id={$the_post_id}'>View post</a> or <a href='posts.php'>See all posts</a></p>";
     }
 ?>   
 
@@ -58,8 +62,11 @@
     </div>
     
     <div class="form-group">
-        <label for="post_status">Post Status</label>
-        <input type="text" class="form-control" name="post_status">
+        <select name="post_status" id="">
+            <option value="draft">Post Status</option>
+            <option value="published">Published</option>
+            <option value="draft">Draft</option>
+        </select>
     </div>
     
     <div class="form-group">
@@ -74,7 +81,7 @@
     
     <div class="form-group">
         <label for="post_content">Post Content</label>    
-        <textarea name="post_content" id="" cols="30" rows="10" class="form-control"></textarea>
+        <textarea name="post_content" id="body" cols="30" rows="10" class="form-control"></textarea>
     </div>
     
     <div class="form-group">
