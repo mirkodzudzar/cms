@@ -1,4 +1,4 @@
-$(document).ready(function(){
+$(document).ready(function(){    
 //CKEDITOR
     ClassicEditor
         .create( document.querySelector( '#body' ) )
@@ -6,7 +6,7 @@ $(document).ready(function(){
             console.error( error );
         } ); 
     
-//REST OF THE CODE
+//CHECKING ALL CHECKBOXES
     $('#selectAllBoxes').click(function(event)
     {    
         if(this.checked)
@@ -26,4 +26,17 @@ $(document).ready(function(){
     });
     
 //REST OF THE CODE
+    
 });
+
+//LOADER SETTINGS
+    var myVar;
+
+    function myFunction() {
+      myVar = setTimeout(showPage, 2000);
+    }
+
+    function showPage() {
+      document.getElementById("loader").style.display = "none";
+      document.getElementById("wrapper").style.display = "block";
+    }
