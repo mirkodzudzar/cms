@@ -16,7 +16,7 @@
                         Welcome to admin,
                         <small><?php echo $_SESSION['username']; ?></small>
                     </h1>
-                    
+
                     <?php
                         if(isset($_GET['source']))
                         {
@@ -26,7 +26,7 @@
                         {
                             $source = '';
                         }
-                    
+
                         switch($source)
                         {
                             case'add_post':
@@ -40,8 +40,7 @@
                                 break;
                         }
                     ?>
-                    
-                </div>
+
             </div>
             <!-- /.row -->
 
