@@ -1,25 +1,21 @@
-$(document).ready(function(){    
+////JQUERY
+$(document).ready(function () {
 //CKEDITOR
     ClassicEditor
-        .create( document.querySelector( '#body' ) )
-        .catch( error => {
-            console.error( error );
-        } ); 
+        .create(document.querySelector('#body'))
+        .catch(error => {
+            console.error(error);
+        }); 
     
 //CHECKING ALL CHECKBOXES
-    $('#selectAllBoxes').click(function(event)
-    {    
-        if(this.checked)
-        {       
-            $('.checkBoxes').each(function()
-            {
+    $('#selectAllBoxes').click(function (event) {    
+        if(this.checked) {       
+            $('.checkBoxes').each(function () {
                this.checked = true; 
             });
         }
-        else
-        {
-            $('.checkBoxes').each(function()
-            {
+        else{
+            $('.checkBoxes').each(function () {
                this.checked = false; 
             });
         }
@@ -40,3 +36,15 @@ $(document).ready(function(){
       document.getElementById("loader").style.display = "none";
       document.getElementById("wrapper").style.display = "block";
     }
+
+//REFRESHING PAGE TO SHOW ONLINE USERS NUMBER
+
+function loadUsersOnline() {
+    $.get("functions.php?onlineusers=result", function (data) {
+        $(".usersonline").text(data);
+    });
+}
+
+setInterval(function () {
+    loadUsersOnline();
+}, 500);
