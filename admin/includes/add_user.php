@@ -5,22 +5,18 @@
         $user_password = $_POST['user_password'];
         $user_firstname = $_POST['user_firstname'];
         $user_lastname = $_POST['user_lastname'];
-        $user_email = $_POST['user_email'];
-        
-//        $post_image = $_FILES['image']['name'];
-//        $post_image_temp = $_FILES['image']['tmp_name'];
-        
+        $user_email = $_POST['user_email'];    
         $user_role = $_POST['user_role'];
         $user_date = date('d-m-y');
         
-//        move_uploaded_file($post_image_temp, "../images/$post_image");
+        $user_password = password_hash($user_password, PASSWORD_BCRYPT, array('cost' => 10));
         
         $query = "INSERT INTO users(username, user_password, user_firstname, user_lastname, user_email, user_role, user_date) ";
         $query .= "VALUES('{$username}', '{$user_password}', '{$user_firstname}', '{$user_lastname}', '{$user_email}', '{$user_role}', now())";
         
         $create_user_query = mysqli_query($connection, $query);
         
-        //FUNCTION
+        //CUSTOM FUNCTION
         confirm($create_user_query);
         
         $the_user_id = mysqli_insert_id($connection);

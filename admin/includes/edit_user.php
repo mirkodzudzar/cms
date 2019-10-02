@@ -3,79 +3,71 @@
     if(isset($_GET['u_id']))
     {
         $the_user_id = $_GET['u_id'];
-    }
 
-    $query = "SELECT * FROM users WHERE user_id = {$the_user_id}";
-    $select_users_by_id = mysqli_query($connection, $query);
+        $query = "SELECT * FROM users WHERE user_id = {$the_user_id}";
+        $select_users_by_id = mysqli_query($connection, $query);
 
-    confirm($select_users_by_id);
+        confirm($select_users_by_id);
 
-    while($row = mysqli_fetch_assoc($select_users_by_id))
-    {
-        $user_id = $row['user_id'];
-        $username = $row['username'];
-        $user_password = $row['user_password'];
-        $user_firstname = $row['user_firstname'];
-        $user_lastname = $row['user_lastname'];
-        $user_email = $row['user_email'];
-        $user_role = $row['user_role'];
-        $user_date = $row['user_date'];
-        
-        $user_password = crypt($user_password, $user_password);
-    }
-
-    if(isset($_POST['update_user']))
-    {
-        $username = $_POST['username'];
-        $user_password = $_POST['user_password'];
-        $user_firstname = $_POST['user_firstname'];
-        $user_lastname = $_POST['user_lastname'];
-        $user_email = $_POST['user_email'];
-        $user_role = $_POST['user_role'];
-        
-//        move_uploaded_file($post_image_temp, "../images/{$post_image}");
-        
-//        if(empty($post_image))
-//        {
-//            $query = "SELECT * FROM posts WHERE post_id = {$the_post_id}";
-//            $select_image = mysqli_query($connection, $query);
-//            
-//            while($row = mysqli_fetch_array($select_image))
-//            {
-//                $post_image = $row['post_image'];
-//            }
-//        }
-        
-        $query = "SELECT randSalt FROM users";
-        $select_randSalt_query = mysqli_query($connection, $query);
-
-        if(!$select_randSalt_query)
+        while($row = mysqli_fetch_assoc($select_users_by_id))
         {
-            die('QUERY FAILED!' . mysqli_error($connection));
+            $user_id = $row['user_id'];
+            $username = $row['username'];
+            $user_password = $row['user_password'];
+            $user_firstname = $row['user_firstname'];
+            $user_lastname = $row['user_lastname'];
+            $user_email = $row['user_email'];
+            $user_role = $row['user_role'];
+            $user_date = $row['user_date'];
         }
+       
+        if(isset($_POST['update_user']))
+        {
+            $username = $_POST['username'];
+            $user_password = $_POST['user_password'];
+            $user_firstname = $_POST['user_firstname'];
+            $user_lastname = $_POST['user_lastname'];
+            $user_email = $_POST['user_email'];
+            $user_role = $_POST['user_role'];
 
-        $row = mysqli_fetch_array($select_randSalt_query);
-        $salt = $row['randSalt'];
+            if(!empty($user_password))
+            {
+                $query_password = "SELECT user_password FROM users WHERE user_id = '{$the_user_id}'";
+                $get_user_query = mysqli_query($connection, $query_password);
 
-        $hashed_password = crypt($user_password, $salt);
-        
-        $query = "UPDATE users SET ";
-        $query .= "username = '{$username}', ";
-        $query .= "user_password = '{$hashed_password}', ";
-        $query .= "user_firstname ='{$user_firstname}', ";
-        $query .= "user_lastname = '{$user_lastname}', ";
-        $query .= "user_email = '{$user_email}', ";
-        $query .= "user_role = '{$user_role}', ";
-        $query .= "user_date = now() ";
-        $query .= "WHERE user_id = '{$the_user_id}' ";
-        
-        $update_user = mysqli_query($connection, $query);
+                confirm($get_user_query);
 
-        confirm($update_user);
-        
-        echo "<p class='bg-success'>User updated. <a href='users.php'>Edit more users</a></p>";
+                $row = mysqli_fetch_array($get_user_query);
+
+                $db_user_password = $row['user_password'];
+
+                if($db_user_password != $user_password)
+                {
+                    $hashed_password = password_hash($user_password, PASSWORD_BCRYPT, array('cost' => 12));
+                } 
+
+                $query = "UPDATE users SET ";
+                $query .= "username = '{$username}', ";
+                $query .= "user_password = '{$hashed_password}', ";
+                $query .= "user_firstname ='{$user_firstname}', ";
+                $query .= "user_lastname = '{$user_lastname}', ";
+                $query .= "user_email = '{$user_email}', ";
+                $query .= "user_role = '{$user_role}', ";
+                $query .= "user_date = now() ";
+                $query .= "WHERE user_id = '{$the_user_id}' ";
+
+                $update_user = mysqli_query($connection, $query);
+
+                confirm($update_user);
+
+                echo "<p class='bg-success'>User updated. <a href='users.php'>Edit more users</a></p>";
+            }
+        }
     }
-
+    else
+    {
+        header("Location: index.php");
+    }
 ?>
 
 <form action="" method="POST" enctype="multipart/form-data">
@@ -106,14 +98,7 @@
            
         </select>
     </div>
-    
-<!--
-    <div class="form-group">
-        <label for="post_image">Post Image</label>
-        <input type="file" name="image">
-    </div>
--->
-    
+
     <div class="form-group">
         <label for="username">Username</label>
         <input type="text" class="form-control" value="<?php echo $username; ?>" name="username">
@@ -126,7 +111,7 @@
     
     <div class="form-group">
         <label for="user_password">Password</label>
-        <input type="password" class="form-control" value="<?php echo $user_password; ?>" name="user_password">
+        <input type="password" autocomplete="off" class="form-control" name="user_password">
     </div>
     
     <div class="form-group">

@@ -37,7 +37,7 @@ $(document).ready(function () {
       document.getElementById("wrapper").style.display = "block";
     }
 
-//REFRESHING PAGE TO SHOW ONLINE USERS NUMBER
+//REFRESHING PAGE TO SHOW ONLINE USERS NUMBER - AJAX
 
 function loadUsersOnline() {
     $.get("functions.php?onlineusers=result", function (data) {
