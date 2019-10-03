@@ -1,4 +1,11 @@
 <?php
+    function escape($string)
+    {
+        global $connection;
+        
+        mysqli_real_escape_string($connection, trim($string));
+    }
+
     //Does not working on chrome, ie and safari. Opera and firefox are functioning.
     function users_online()
     {   
@@ -115,7 +122,7 @@
             {
                 if($_SESSION['user_role'] == 'admin')
                 {
-                    $the_cat_id = mysqli_real_escape_string($connection, $_GET['delete']);
+                    $the_cat_id = $_GET['delete'];
                     $query = "DELETE FROM categories WHERE cat_id = {$the_cat_id}";
                     $delete_query = mysqli_query($connection, $query);
                     header("Location: categories.php");
