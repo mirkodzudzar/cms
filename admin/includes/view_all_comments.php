@@ -1,3 +1,5 @@
+<?php include"includes/delete_modal.php"; ?>
+
 <div class="table-responsive">
     <table class="table table-bordered table-hover">
         <thead>
@@ -58,9 +60,19 @@
                     }
 
                     echo "<td>{$comment_date}</td>";
-                    echo "<td><a href='comments.php?approve={$comment_id}'>APPROVE</a></td>";
-                    echo "<td><a href='comments.php?unapprove={$comment_id}'>UNAPPROVE</a></td>";
-                    echo "<td><a onClick=\"javascript: return confirm('Are you sure you want to delete?');\" href='comments.php?delete={$comment_id}'>DELETE</a></td>";
+                    
+                    if($comment_status != 'approved')
+                    {
+                        echo "<td><a href='comments.php?approve={$comment_id}' class='btn btn-primary'>APPROVE</a></td>";
+                        echo "<td></td>";
+                    }
+                    else
+                    {
+                        echo "<td></td>";
+                        echo "<td><a href='comments.php?unapprove={$comment_id}' class='btn btn-primary'>UNAPPROVE</a></td>";    
+                    }
+                    
+                    echo "<td><a rel='{$comment_id}' href='javascript:void(0)' class='btn btn-danger delete_link'>DELETE</a></td>";
                     echo "</tr>";
 
                 }
@@ -74,22 +86,34 @@
 
     if(isset($_GET['approve']))
     {
-        $the_comment_id = $_GET['approve'];
-        
-        $query = "UPDATE comments SET comment_status = 'approved' WHERE comment_id = {$the_comment_id}";
-        $approve_comment_query = mysqli_query($connection, $query);
-        
-        header("Location: comments.php");
+        if(isset($_SESSION['user_role']))
+        {
+            if($_SESSION['user_role'] == 'admin')
+            {
+                $the_comment_id = escape($_GET['approve']);
+
+                $query = "UPDATE comments SET comment_status = 'approved' WHERE comment_id = {$the_comment_id}";
+                $approve_comment_query = mysqli_query($connection, $query);
+
+                header("Location: comments.php");
+            }
+        }
     }
 
     if(isset($_GET['unapprove']))
     {
-        $the_comment_id = $_GET['unapprove'];
-        
-        $query = "UPDATE comments SET comment_status = 'unapproved' WHERE comment_id = {$the_comment_id}";
-        $unapprove_comment_query = mysqli_query($connection, $query);
-        
-        header("Location: comments.php");
+        if(isset($_SESSION['user_role']))
+        {
+            if($_SESSION['user_role'] == 'admin')
+            {
+                $the_comment_id = escape($_GET['unapprove']);
+
+                $query = "UPDATE comments SET comment_status = 'unapproved' WHERE comment_id = {$the_comment_id}";
+                $unapprove_comment_query = mysqli_query($connection, $query);
+
+                header("Location: comments.php");
+            }
+        }
     }
 
     if(isset($_GET['delete']))
@@ -98,7 +122,7 @@
         {
             if($_SESSION['user_role'] == 'admin')
             {
-                $the_comment_id = mysqli_real_escape_string($connection, $_GET['delete']);
+                $the_comment_id = escape($_GET['delete']);
 
                 $query = "DELETE FROM comments WHERE comment_id = {$the_comment_id}";
                 $delete_query = mysqli_query($connection, $query);
@@ -108,3 +132,14 @@
         }
     }
 ?>
+
+<script>
+    $(document).ready(function(){
+        $(".delete_link").on('click', function(){
+            var id = $(this).attr("rel");
+            var delete_url = "comments.php?delete="+ id +" ";
+            $(".modal_delete_link").attr("href", delete_url);
+            $("#myModal").modal('show');
+        });
+    });
+</script>

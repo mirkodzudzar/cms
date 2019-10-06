@@ -1,5 +1,5 @@
 <?php include "../includes/db.php"; ?>
-<?php include "functions.php" ?>
+<?php include "admin_functions.php" ?>
 <?php ob_start(); ?>
 <?php session_start(); ?>
 
@@ -48,9 +48,11 @@
     
     <script type="text/javascript" src="https://www.gstatic.com/charts/loader.js"></script>
     
-    <script src="https://cdn.ckeditor.com/ckeditor5/12.4.0/classic/ckeditor.js"></script>
+    <script src="https://cdn.ckeditor.com/ckeditor5/12.4.0/classic/ckeditor.js">
+    </script>
     
-    
+    <!-- jQuery -->
+    <script src="js/jquery.js"></script>
 
 </head>
 

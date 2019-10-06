@@ -1,5 +1,7 @@
 <?php include "includes/admin_header.php"; ?>
 
+<?php include "includes/delete_modal.php"; ?>
+
 <div id="wrapper">
 
     <!-- Navigation -->
@@ -39,7 +41,7 @@
                             //UPDATE AND INCLUDE QUERY
                             if(isset($_GET['edit']))
                             {
-                                $cat_id = $_GET['edit'];
+                                $cat_id = escape($_GET['edit']);
                                 
                                 include "includes/update_categories.php";
                                 
@@ -52,8 +54,8 @@
                             <thead>
                                 <tr>
                                     <th>Id</th>
-                                    <th>Category Title</th>                   <th></th>
-                                    <th></th>
+                                    <th>Category Title</th>               <th>Edit</th>
+                                    <th>Delete</th>
                                 </tr>
                             </thead>
                             <tbody>
@@ -85,3 +87,14 @@
 </div>
 <!-- /#wrapper -->
 <?php include "includes/admin_footer.php"; ?>
+
+<script>
+    $(document).ready(function(){
+        $(".delete_link").on('click', function(){
+            var id = $(this).attr("rel");
+            var delete_url = "categories.php?delete="+ id +" ";
+            $(".modal_delete_link").attr("href", delete_url);
+            $("#myModal").modal('show');
+        });
+    });
+</script>

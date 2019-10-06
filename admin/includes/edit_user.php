@@ -2,7 +2,7 @@
 
     if(isset($_GET['u_id']))
     {
-        $the_user_id = $_GET['u_id'];
+        $the_user_id = escape($_GET['u_id']);
 
         $query = "SELECT * FROM users WHERE user_id = {$the_user_id}";
         $select_users_by_id = mysqli_query($connection, $query);
@@ -23,12 +23,12 @@
        
         if(isset($_POST['update_user']))
         {
-            $username = $_POST['username'];
-            $user_password = $_POST['user_password'];
-            $user_firstname = $_POST['user_firstname'];
-            $user_lastname = $_POST['user_lastname'];
-            $user_email = $_POST['user_email'];
-            $user_role = $_POST['user_role'];
+            $username = escape($_POST['username']);
+            $user_password = escape($_POST['user_password']);
+            $user_firstname = escape($_POST['user_firstname']);
+            $user_lastname = escape($_POST['user_lastname']);
+            $user_email = escape($_POST['user_email']);
+            $user_role = escape($_POST['user_role']);
 
             if(!empty($user_password))
             {

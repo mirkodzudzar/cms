@@ -3,7 +3,9 @@
     {
         global $connection;
         
-        mysqli_real_escape_string($connection, trim($string));
+        $string = mysqli_real_escape_string($connection, trim($string));
+        
+        return htmlspecialchars($string);
     }
 
     //Does not working on chrome, ie and safari. Opera and firefox are functioning.
@@ -67,7 +69,7 @@
         
         if(isset($_POST['submit']))
         {
-            $cat_title = $_POST['cat_title'];
+            $cat_title = escape($_POST['cat_title']);
 
             if($cat_title == "" || empty($cat_title))
             {
@@ -105,8 +107,8 @@
         echo "<tr>";
         echo "<td>{$cat_id}</td>";
         echo "<td>{$cat_title}</td>";                     
-        echo "<td><a href='categories.php?delete={$cat_id}'>DELETE</a></td>";
-        echo "<td><a href='categories.php?edit={$cat_id}'>EDIT</a></td>";
+        echo "<td><a href='categories.php?edit={$cat_id}' class='btn btn-success'>EDIT</a></td>";
+        echo "<td><a rel='{$cat_id}' href='javascript:void(0)' class='btn btn-danger delete_link'>DELETE</a></td>";
         echo "<tr>";
 
         }
@@ -122,7 +124,7 @@
             {
                 if($_SESSION['user_role'] == 'admin')
                 {
-                    $the_cat_id = $_GET['delete'];
+                    $the_cat_id = escape($_GET['delete']);
                     $query = "DELETE FROM categories WHERE cat_id = {$the_cat_id}";
                     $delete_query = mysqli_query($connection, $query);
                     header("Location: categories.php");

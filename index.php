@@ -1,5 +1,3 @@
-<?php include "includes/db.php"; ?>
-
 <?php include "includes/header.php"; ?>
 
 <!-- Navigation -->
@@ -16,7 +14,7 @@
         
         if(isset($_GET['page']))
         {
-            $page = $_GET['page'];
+            $page = escape($_GET['page']);
         }
         else
         {
@@ -30,52 +28,72 @@
         {
             $page_1 = ($page * $per_page) - $per_page;
         }
+        
+        if(isset($_SESSION['user_role']) && $_SESSION['user_role'] == 'admin')
+        {
+            $post_query_count = "SELECT *FROM posts WHERE post_status = 'published'";
+        }
+        else
+        {
+            $post_query_count = "SELECT * FROM posts WHERE post_status = 'published' AND post_status = 'published'";
+        }
 
-        $post_query_count = "SELECT *FROM posts";
+        $post_query_count = "SELECT * FROM posts WHERE post_status = 'published'";
         $find_count = mysqli_query($connection, $post_query_count);
         $count = mysqli_num_rows($find_count);
         
-        $count = ceil($count / $per_page);
-        
-        $query = "SELECT * FROM posts LIMIT $page_1, $per_page";// WHERE post_status = 'published'
-        $select_all_posts_query = mysqli_query($connection, $query);
-
-        while($row = mysqli_fetch_assoc($select_all_posts_query))
+        if($count < 1)
         {
-            $post_id = $row['post_id'];
-            $post_title = $row['post_title'];                
-            $post_user = $row['post_user'];
-            $post_date = $row['post_date'];
-            $post_image = $row['post_image'];
-            $post_content = substr($row['post_content'], 0, 100);
-            $post_status = $row['post_status'];
+            echo "<h3 class='text-center bg-danger'>No posts available.</h3>";
+        }
+        else
+        {
+            $count = ceil($count / $per_page);
             
-            if($post_status == 'published')
+            if(isset($_SESSION['user_role']) && $_SESSION['user_role'] == 'admin')
             {
+                $query = "SELECT * FROM posts LIMIT $page_1, $per_page";
+            }
+            else
+            {
+                $query = "SELECT * FROM posts WHERE post_status = 'published' LIMIT $page_1, $per_page";
+            }
+            
+            $select_all_posts_query = mysqli_query($connection, $query);
+
+            while($row = mysqli_fetch_assoc($select_all_posts_query))
+            {
+                $post_id = $row['post_id'];
+                $post_title = $row['post_title'];                
+                $post_user = $row['post_user'];
+                $post_date = $row['post_date'];
+                $post_image = $row['post_image'];
+                $post_content = substr($row['post_content'], 0, 100);
+                $post_status = $row['post_status'];
                 
         ?>
-        <h1 class="page-header">
-        Page Heading
-        <small>Secondary Text</small>
-        </h1>
+                <h1 class="page-header">
+                Page Heading
+                <small>Secondary Text</small>
+                </h1>
 
-        <!-- First Blog Post -->
-        <h2>
-            <a href="post.php?p_id=<?php echo $post_id; ?>"><?php echo $post_title; ?></a>
-        </h2> 
-        <p class="lead">
-            by <a href="author_posts.php?author=<?php echo $post_user; ?>&p_id=<?php echo $post_id; ?>"><?php echo $post_user; ?></a>
-        </p>
-        <p><span class="glyphicon glyphicon-time"></span> Posted on <?php echo $post_date; ?></p>
-        <hr>
-        <a href="post.php?p_id=<?php echo $post_id; ?>">
-        <img class="img-responsive" src="images/<?php echo $post_image; ?>" alt="">
-        </a>
-        <hr>
-        <p><?php echo $post_content; ?></p>
-        <a href="post.php?p_id=<?php echo $post_id; ?>" class="btn btn-primary">Read More <span class="glyphicon glyphicon-chevron-right"></span></a>
+                <!-- First Blog Post -->
+                <h2>
+                    <a href="post.php?p_id=<?php echo $post_id; ?>"><?php echo $post_title; ?></a>
+                </h2> 
+                <p class="lead">
+                    by <a href="author_posts.php?author=<?php echo $post_user; ?>&p_id=<?php echo $post_id; ?>"><?php echo $post_user; ?></a>
+                </p>
+                <p><span class="glyphicon glyphicon-time"></span> Posted on <?php echo $post_date; ?></p>
+                <hr>
+                <a href="post.php?p_id=<?php echo $post_id; ?>">
+                <img class="img-responsive" src="images/<?php echo $post_image; ?>" alt="">
+                </a>
+                <hr>
+                <p><?php echo $post_content; ?></p>
+                <a href="post.php?p_id=<?php echo $post_id; ?>" class="btn btn-primary">Read More <span class="glyphicon glyphicon-chevron-right"></span></a>
 
-        <hr>
+                <hr>
 
         <?php
             }

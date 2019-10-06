@@ -1,9 +1,20 @@
-<?php include "includes/admin_header.php"; ?>
+<?php include "includes/header.php"; ?>
 
+<?php
+if(isset($_SESSION['user_role']))
+{
+    if($_SESSION['user_role'] == 'admin')
+    {
+        header("Location: admin/profile.php");
+    }
+    else
+    {
+?>
+   
 <div id="wrapper">
 
     <!-- Navigation -->
-    <?php include "includes/admin_navigation.php"; ?>
+    <?php include "includes/navigation.php"; ?>
 
     <div id="page-wrapper">
 
@@ -13,7 +24,7 @@
             <div class="row">
                 <div class="col-lg-12">
                     <h1 class="page-header">
-                        Welcome to admin,
+                        Welcome,
                         <small><?php echo $_SESSION['username']; ?></small>
                     </h1>
                     
@@ -76,7 +87,7 @@
 
                             confirm($update_user);
 
-                            echo "<p class='bg-success'>User updated. <a href='users.php'>Edit more users</a></p>";
+                            echo "<p class='bg-success'>User updated.</p>";
                         }
                     }
                     ?>
@@ -125,4 +136,9 @@
 
 </div>
 <!-- /#wrapper -->
-<?php include "includes/admin_footer.php"; ?>
+<?php include "includes/footer.php"; ?>
+   
+<?php
+    }
+}
+?>

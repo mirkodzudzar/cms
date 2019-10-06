@@ -1,5 +1,6 @@
 <?php session_start(); ?>
 <?php include "db.php"; ?>
+<?php include "../functions.php"; ?>
 <?php
     if(isset($_POST['login_button']))
     {
@@ -8,12 +9,8 @@
 //        $hash_format = "$2y$10$";
 //        $salt = "iusesomecrazystrings22";
         
-        $username = $_POST['username'];
-        $user_password = $_POST['user_password'];
-        
-        //Escaping strings for protection of sql injection...
-        $username = mysqli_real_escape_string($connection, $username);
-        $user_password = mysqli_real_escape_string($connection, $user_password);
+        $username = escape($_POST['username']);
+        $user_password = escape($_POST['user_password']);
         
         $query = "SELECT * FROM users WHERE username = '{$username}'";
         $select_user_query = mysqli_query($connection, $query);
@@ -44,12 +41,15 @@
             $_SESSION['user_email'] = $db_user_email;
             $_SESSION['user_password'] = $db_user_password;
             $_SESSION['user_role'] = $db_user_role;
-            
-            header("Location: ../admin/index.php");
-        }
-        else
-        {
-            header("Location: ../index.php");
+
+            if($db_user_role == 'admin')
+            {
+                header("Location: ../admin/index.php");
+            }
+            else
+            {
+                header("Location: ../index.php");
+            }
         }
     }
 ?>
